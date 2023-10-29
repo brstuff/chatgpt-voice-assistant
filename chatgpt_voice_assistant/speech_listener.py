@@ -23,9 +23,10 @@ from chatgpt_voice_assistant.models.input_device import InputDevice
 class SpeechListener(Listener):
     """Class to listen to speech convert it to text"""
 
-    def __init__(self, input_device: InputDevice) -> None:
+    def __init__(self, input_device: InputDevice, lang: None) -> None:
         self._recognizer = Recognizer()
         self._input_device: InputDevice = input_device
+        self._lang: InputDevice = lang
 
     def listen(self) -> str:
         """
@@ -52,7 +53,7 @@ class SpeechListener(Listener):
             text: str = cast(
                 str,
                 self._recognizer.recognize_google(
-                    audio, show_all=False, with_confidence=False
+                    audio, show_all=False, language=self._lang, with_confidence=False
                 ),
             )
 

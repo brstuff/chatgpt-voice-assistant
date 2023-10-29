@@ -34,6 +34,7 @@ dev = [
 
 [project.scripts]
 chatgpt-assist = "chatgpt_voice_assistant.main:main"
+trinity = "chatgpt_voice_assistant.main:main"
 
 [tool.pytest.ini_options]
 addopts = [

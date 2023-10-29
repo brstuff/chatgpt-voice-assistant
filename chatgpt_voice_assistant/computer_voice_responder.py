@@ -1,6 +1,8 @@
 import logging
 import os
 import subprocess
+import platform
+
 
 from chatgpt_voice_assistant.bases.responder import Responder
 from chatgpt_voice_assistant.bases.text_to_speech_client import TextToSpeechClient
@@ -34,7 +36,11 @@ class ComputerVoiceResponder(Responder):
             self._text_to_speech_client.convert_text_to_audio(
                 text_to_speak, self._audio_filename
             )
-            cmd = ["afplay", "--rate", str(self._speech_rate), self._audio_filename]
+            if platform.system() == 'Darwin':  # Verifica se o sistema é OSX
+                cmd = ["afplay", "--rate", str(self._speech_rate), self._audio_filename]
+            else:
+                cmd = ["ffplay", self._audio_filename, "-autoexit", "-nodisp", "-loglevel", "quiet", "-stats"]
+
             logging.debug(cmd)
             subprocess.call(cmd)
         except Exception as e:

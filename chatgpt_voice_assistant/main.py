@@ -1,3 +1,5 @@
+import logging
+
 from chatgpt_voice_assistant.bases.listener import Listener
 from chatgpt_voice_assistant.bases.options_parser import OptionsParser
 from chatgpt_voice_assistant.bases.text_generator import TextGenerator
@@ -43,7 +45,7 @@ def main() -> None:
     )
 
     # service to listen for speech and convert it to text
-    listener: Listener = SpeechListener(input_device)
+    listener: Listener = SpeechListener(input_device, options.lang)
 
     # service to generate text given an input
     text_generator: TextGenerator = OpenAITextGenerator(
@@ -56,6 +58,9 @@ def main() -> None:
         text_to_speech_client = AppleSayTextToSpeechClient()
     else:
         text_to_speech_client = GoogleTextToSpeechClient(options.lang, options.tld)
+
+    logging.info(f"Lang: {options.lang}")
+
 
     # service to respond to the user the generated text
     responder = ComputerVoiceResponder(
